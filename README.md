@@ -154,8 +154,6 @@ export const createUserZodSchema = z.object({
 Each parcel contains a statusLogs array to track its full journey. Each log contains:
 
 ```bash
-
-🔁 Parcel Status Logs
 Each parcel contains a statusLogs array to track its full journey. Each log contains:
 
 ```
