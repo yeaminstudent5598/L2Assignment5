@@ -19,6 +19,7 @@ This is a role-based REST API backend system for a parcel delivery service — i
 
 ## 📁 Folder Structure
 
+```bash
 src/
 ├── app/
 │ ├── modules/
@@ -32,7 +33,7 @@ src/
 ├── interfaces/
 ├── server.ts
 
-
+```
 ---
 
 ## 🧪 Tech Stack
