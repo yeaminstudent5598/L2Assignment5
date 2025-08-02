@@ -4,6 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 import { User } from '../modules/user/user.model';
 import { envVars } from '../config/env';
 import { verifyToken } from '../utils/jwt';
+import AppError from '../errorHelpers/AppError';
 
 interface JwtPayload {
   userId: string;
@@ -26,15 +27,12 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     const authHeader = req.headers.authorization;
     console.log('Authorization Header:', authHeader);
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      console.log('No Bearer token found');
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
+    if(!authHeader) {
+            throw new AppError(403, "No Token Received")
+        }
 
-    const token = authHeader.split(' ')[1];
-    console.log('Token:', token);
 
-    const decoded = verifyToken(token, envVars.JWT_ACCESS_SECRET!) as JwtPayload;
+    const decoded = verifyToken(authHeader, envVars.JWT_ACCESS_SECRET!) as JwtPayload;
     console.log('Decoded token:', decoded);
 
     const user = await User.findById(decoded.userId);
