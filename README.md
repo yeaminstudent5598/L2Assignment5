@@ -20,15 +20,58 @@ This is a role-based REST API backend system for a parcel delivery service — i
 ## 📁 Folder Structure
 
 ```bash
-src/
-├── modules/
-│   ├── auth/
-│   ├── user/
-│   ├── parcel/ 
-├── middlewares/
-├── config/
-├── utils/
-├── app.ts
+├── .env.example
+├── .gitignore
+├── README.md
+├── package-lock.json
+├── package.json
+├── src
+    ├── app.ts
+    ├── config
+    │   └── env.ts
+    ├── errorHelpers
+    │   └── AppError.ts
+    ├── middlewares
+    │   ├── authMiddleware.ts
+    │   ├── errorMiddleware.ts
+    │   └── validateMiddleware.ts
+    ├── modules
+    │   ├── auth
+    │   │   ├── auth.controller.ts
+    │   │   ├── auth.model.ts
+    │   │   ├── auth.routes.ts
+    │   │   └── auth.service.ts
+    │   ├── parcel
+    │   │   ├── parcel.controller.ts
+    │   │   ├── parcel.interface.ts
+    │   │   ├── parcel.model.ts
+    │   │   ├── parcel.routes.ts
+    │   │   └── parcel.service.ts
+    │   └── user
+    │   │   ├── user.constant.ts
+    │   │   ├── user.controller.ts
+    │   │   ├── user.interface.ts
+    │   │   ├── user.model.ts
+    │   │   ├── user.routes.ts
+    │   │   ├── user.service.ts
+    │   │   └── user.validation.ts
+    ├── routes
+    │   └── index.ts
+    ├── server.ts
+    ├── types
+    │   ├── auth.d.ts
+    │   ├── customTypes.ts
+    │   └── express.d.ts
+    └── utils
+    │   ├── catchAsync.ts
+    │   ├── generateTrackingId.ts
+    │   ├── jwt.ts
+    │   ├── logger.ts
+    │   ├── sendEmail.ts
+    │   ├── sendResponse.ts
+    │   └── setCookie.ts
+├── tsconfig.json
+└── vercel.json
 
 
 ```
