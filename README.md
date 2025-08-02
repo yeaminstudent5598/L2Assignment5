@@ -90,6 +90,145 @@ src/
 
 ```bash
 git clone https://github.com/yourname/parcel-delivery-api.git
-cd parcel-delivery-api ```
+cd parcel-delivery-api
 
-----
+```
+
+2. **Install dependencies**
+
+```bash
+npm install
+```
+
+3. **Create .env file**
+
+```bash
+PORT=5000
+DATABASE_URL=your_mongo_uri
+JWT_SECRET=your_secret
+BCRYPT_SALT_ROUNDS=10
+
+```
+
+4. **Run the server**
+
+```bash
+npm run dev
+
+```
+
+### 🔐 Auth & Security
+JWT-based login system.
+
+Authenticated routes require the following header:
+
+```bash
+Authorization: Bearer <your_token>
+
+```
+
+Passwords are hashed with bcryptjs before saving.
+
+Role-based access control via middleware.
+
+
+### ✅ Zod Validation
+All incoming data (e.g., registration, login, parcel creation) is validated using Zod schemas before hitting the controller.
+
+Example Zod validation for a user:
+
+```bash
+import { z } from 'zod';
+
+export const createUserZodSchema = z.object({
+  body: z.object({
+    name: z.string(),
+    email: z.string().email(),
+    password: z.string().min(6),
+    role: z.enum(['SENDER', 'RECEIVER']),
+  }),
+});
+
+```
+### 🔁 Parcel Status Logs
+Each parcel contains a statusLogs array to track its full journey. Each log contains:
+
+```bash
+
+🔁 Parcel Status Logs
+Each parcel contains a statusLogs array to track its full journey. Each log contains:
+
+```
+
+Accessible via:
+
+```bash
+
+GET /api/parcels/:id/status-log
+
+```
+
+### 👤 Sender / Receiver Capabilities
+## Sender can:
+Register, login
+
+Create parcels
+
+Cancel parcels (if not dispatched)
+
+View all their sent parcels and history
+
+## Receiver can:
+Register, login
+
+View incoming parcels
+
+Confirm delivery
+
+View delivery history
+
+## 🛡️ Admin Capabilities
+View and manage all users
+
+Block or unblock parcels or users
+
+Update parcel status at any time
+
+Assign delivery status (like DISPATCHED, DELIVERED)
+
+Full visibility across the system
+
+### 🔍 Parcel Tracking Format
+Every parcel has a unique tracking ID like:
+
+```bash
+TRK-20250802-000001
+
+```
+
+Searchable via:
+
+```bash
+GET /api/parcels/tracking/:trackingId
+
+```
+
+### 📦 Example Parcel Schema (Simplified)
+
+```bash
+
+{
+  _id: ObjectId,
+  trackingId: string,
+  senderId: ObjectId,
+  receiverId: ObjectId,
+  type: 'Document' | 'Box',
+  weight: number,
+  deliveryAddress: string,
+  fee: number,
+  status: 'REQUESTED' | 'DISPATCHED' | 'DELIVERED',
+  isBlocked: boolean,
+  statusLogs: [ ... ]
+}
+````
+
