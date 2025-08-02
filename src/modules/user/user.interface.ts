@@ -8,11 +8,11 @@ export enum IsBlocked {
 }
 
 export interface IUser {
-  _id?: string;             // MongoDB ID as string
+  _id?: string;            
   email: string;
   name: string;
   phoneNumber: string;
-  password?: string;        // optional when returning user data (e.g., responses)
+  password?: string;       
   role: UserRole;
   isBlocked?: IsBlocked;
   createdAt?: Date;

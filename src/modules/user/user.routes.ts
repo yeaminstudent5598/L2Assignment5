@@ -11,6 +11,21 @@ router.post('/register', UserController.createUser);
 // Add this route:
 router.get('/me', authenticate, UserController.getMeProfile);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 router.get(
   '/my-parcels',
   authenticate,
