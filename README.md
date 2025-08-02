@@ -21,17 +21,15 @@ This is a role-based REST API backend system for a parcel delivery service — i
 
 ```bash
 src/
-├── app/
-│ ├── modules/
-│ │ ├── user/
-│ │ ├── auth/
-│ │ ├── parcel/
-│ └── middlewares/
+├── modules/
+│   ├── auth/
+│   ├── user/
+│   ├── parcel/ 
+├── middlewares/
 ├── config/
-├── constants/
-├── enums/
-├── interfaces/
-├── server.ts
+├── utils/
+├── app.ts
+
 
 ```
 ---
