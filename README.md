@@ -233,7 +233,14 @@ GET /api/parcels/tracking/:trackingId
   weight: number,
   deliveryAddress: string,
   fee: number,
-  status: 'REQUESTED' | 'DISPATCHED' | 'DELIVERED',
+  status: 'REQUESTED'
+  | 'APPROVED'
+  | 'DISPATCHED'
+  | 'IN_TRANSIT'
+  | 'DELIVERED'
+  | 'CANCELLED'
+  | 'RETURNED'
+  | 'BLOCKED';,
   isBlocked: boolean,
   statusLogs: [ ... ]
 }
