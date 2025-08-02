@@ -58,7 +58,8 @@ const getReceiverParcels = async (receiverId: string): Promise<IParcel[]> => {
   return await Parcel.find({ receiver: receiverId });
 };
 
-const getSingleParcel = async (id: string): Promise<IParcel | null> => {
+// <-- getParcelById added here -->
+const getParcelById = async (id: string): Promise<IParcel> => {
   const parcel = await Parcel.findById(id);
   if (!parcel) throw new AppError(httpStatus.NOT_FOUND, 'Parcel not found');
   return parcel;
@@ -67,7 +68,7 @@ const getSingleParcel = async (id: string): Promise<IParcel | null> => {
 const cancelParcel = async (
   parcelId: string,
   senderId: string
-): Promise<IParcel | null> => {
+): Promise<IParcel> => {
   const parcel = await Parcel.findById(parcelId);
   if (!parcel) throw new AppError(httpStatus.NOT_FOUND, 'Parcel not found');
   if (parcel.sender.toString() !== senderId)
@@ -84,10 +85,7 @@ const cancelParcel = async (
   }
 
   if (parcel.status === 'CANCELLED') {
-    throw new AppError(
-      httpStatus.BAD_REQUEST,
-      'Parcel is already cancelled'
-    );
+    throw new AppError(httpStatus.BAD_REQUEST, 'Parcel is already cancelled');
   }
 
   parcel.status = 'CANCELLED';
@@ -101,7 +99,7 @@ const cancelParcel = async (
 const confirmDelivery = async (
   parcelId: string,
   receiverId: string
-): Promise<IParcel | null> => {
+): Promise<IParcel> => {
   const parcel = await Parcel.findById(parcelId);
   if (!parcel) throw new AppError(httpStatus.NOT_FOUND, 'Parcel not found');
   if (parcel.receiver.toString() !== receiverId)
@@ -111,10 +109,7 @@ const confirmDelivery = async (
     );
 
   if (parcel.status === 'DELIVERED') {
-    throw new AppError(
-      httpStatus.BAD_REQUEST,
-      'Parcel is already delivered'
-    );
+    throw new AppError(httpStatus.BAD_REQUEST, 'Parcel is already delivered');
   }
 
   parcel.status = 'DELIVERED';
@@ -132,7 +127,7 @@ const updateParcelStatus = async (
   note?: string,
   location?: string,
   block?: boolean
-): Promise<IParcel | null> => {
+): Promise<IParcel> => {
   const parcel = await Parcel.findById(parcelId);
   if (!parcel) throw new AppError(httpStatus.NOT_FOUND, 'Parcel not found');
 
@@ -143,8 +138,6 @@ const updateParcelStatus = async (
 
   return parcel;
 };
-
-// ✅ NEWLY ADDED FUNCTIONS
 
 const getDeliveryHistory = async (
   userId: string,
@@ -163,7 +156,7 @@ const getDeliveryHistory = async (
 
 const getParcelByTrackingId = async (
   trackingId: string
-): Promise<IParcel | null> => {
+): Promise<IParcel> => {
   const parcel = await Parcel.findOne({ trackingId });
   if (!parcel) throw new AppError(httpStatus.NOT_FOUND, 'Parcel not found');
   return parcel;
@@ -185,7 +178,7 @@ export const ParcelService = {
   getAllParcels,
   getSenderParcels,
   getReceiverParcels,
-  getSingleParcel,
+  getParcelById, 
   cancelParcel,
   confirmDelivery,
   updateParcelStatus,

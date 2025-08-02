@@ -4,7 +4,6 @@ import { Request, Response, NextFunction } from 'express';
 import { User } from '../modules/user/user.model';
 import { envVars } from '../config/env';
 import { verifyToken } from '../utils/jwt';
-import AppError from '../errorHelpers/AppError';
 
 interface JwtPayload {
   userId: string;

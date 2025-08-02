@@ -53,4 +53,15 @@ router.patch(
   UserController.unblockUser
 );
 
+router.delete("/:id", 
+  authenticate, 
+  authorizeRoles('ADMIN'), 
+  UserController.deleteUser)
+
+router.patch("/:id", 
+  authenticate, authorizeRoles
+  ('ADMIN', 'SENDER', 'RECEIVER'),
+  UserController.updateUser
+)
+
 export const UserRoutes = router;

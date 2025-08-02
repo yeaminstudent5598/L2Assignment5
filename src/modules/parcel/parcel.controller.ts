@@ -184,6 +184,20 @@ export const ParcelController = {
       data: parcel,
     });
   }),
+  getParcelById: catchAsync(async (req: Request, res: Response) => {
+  const parcelId = req.params.id;
+  if (!parcelId) throw new Error('Parcel ID missing');
+
+  const parcel = await ParcelService.getParcelById(parcelId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Parcel retrieved successfully',
+    data: parcel,
+  });
+}),
+
 
   getParcelStatusLog: catchAsync(async (req: Request, res: Response) => {
     const parcelId = req.params.parcelId;

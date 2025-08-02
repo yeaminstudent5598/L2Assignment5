@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document, model } from 'mongoose';
-import { IParcel, IParcelStatusLog, ParcelStatus } from './parcel.interface';
+import { IParcel, IParcelStatusLog } from './parcel.interface';
 
 const ParcelStatusLogSchema = new Schema<IParcelStatusLog>(
   {

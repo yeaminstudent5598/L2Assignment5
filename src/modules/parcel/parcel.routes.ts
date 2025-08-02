@@ -92,4 +92,18 @@ router.get(
   ParcelController.getParcelStatusLog
 );
 
+router.get(
+  '/:id',
+  authenticate,
+  ParcelController.getParcelById
+);
+
+router.get(
+  '/:id/status-log',
+   ParcelController.getParcelStatusLog);
+
+router.get('/track/:trackingId',
+   ParcelController.getParcelByTrackingId);
+
+
 export const parcelRoutes = router;

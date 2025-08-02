@@ -3,13 +3,15 @@ import httpStatus from 'http-status-codes';
 import { UserService } from './user.service';
 import sendResponse from '../../utils/sendResponse';
 import catchAsync from '../../utils/catchAsync';
+import { AuthUser } from '../../types/auth';
+import AppError from '../../errorHelpers/AppError';
+
 
 // Fix: Define a typed Request with user for handlers that use req.user
 interface AuthRequest extends Request {
-  user?: {
-    id: string;
-    role?: 'ADMIN' | 'SENDER' | 'RECEIVER';
-  };
+
+user?: AuthUser;
+
 }
 
 // Your handlers
@@ -51,9 +53,18 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 
 const updateUser = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  // Cast req as AuthRequest to access user
   const authReq = req as AuthRequest;
-  if (!authReq.user?.id) throw new Error('User not authenticated');
+
+  if (!authReq.user?.id) {
+    throw new AppError(httpStatus.UNAUTHORIZED, 'User not authenticated');
+  }
+
+  if (
+    authReq.user.role !== 'ADMIN' &&
+    authReq.user.id !== id
+  ) {
+    throw new AppError(httpStatus.FORBIDDEN, "You can't update this profile");
+  }
 
   const updatedUser = await UserService.updateUser(id, req.body, authReq.user);
 
@@ -64,6 +75,7 @@ const updateUser = catchAsync(async (req: Request, res: Response) => {
     data: updatedUser,
   });
 });
+
 
 const deleteUser = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -157,6 +169,7 @@ const unblockUser = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
 
 export const UserController = {
   getAllUsers,
