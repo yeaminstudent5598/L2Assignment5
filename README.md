@@ -66,7 +66,7 @@ This is a role-based REST API backend system for a parcel delivery service — i
     │   ├── catchAsync.ts
     │   ├── generateTrackingId.ts
     │   ├── jwt.ts
-    │   ├── logger.ts
+    │   ├── logger.ts 
     │   ├── sendEmail.ts
     │   ├── sendResponse.ts
     │   └── setCookie.ts
