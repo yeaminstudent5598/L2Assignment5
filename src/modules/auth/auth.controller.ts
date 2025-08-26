@@ -6,6 +6,18 @@ import AppError from '../../errorHelpers/AppError';
 import { setAuthCookie } from '../../utils/setCookie';
 import { AuthService } from './auth.service';
 
+
+
+const createUser = catchAsync(async (req: Request, res: Response) => {
+  const user = await AuthService.createUser(req.body);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.CREATED,
+    message: 'User created successfully',
+    data: user,
+  });
+});
 const credentialsLogin = catchAsync(async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
@@ -91,6 +103,7 @@ const logout = catchAsync(async (req: Request, res: Response) => {
 
 
 export const AuthControllers = {
+  createUser,
   credentialsLogin,
   getNewAccessToken,
   resetPassword,

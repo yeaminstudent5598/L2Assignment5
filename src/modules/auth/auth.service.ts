@@ -3,9 +3,12 @@ import { User } from '../auth/auth.model';
 import { generateToken, verifyToken } from '../../utils/jwt';
 import { envVars } from '../../config/env';
 import AppError from '../../errorHelpers/AppError';
+import { IUser } from '../user/user.interface';
+import httpStatus from 'http-status-codes';
 
 export const AuthService = {
   register: async (userData: { phoneNumber: string; password: string; role: string; name: string }) => {
+     console.log("Register request payload:", userData);
     const { phoneNumber, password, role, name } = userData;
 
     const existingUser = await User.findOne({ phoneNumber });
@@ -27,48 +30,68 @@ export const AuthService = {
     return userObj;
   },
 
- login: async (loginData: { email: string; password: string }) => {
-  const { email, password } = loginData;
+  login: async (loginData: { email: string; password: string }) => {
+    const { email, password } = loginData;
 
+    const user = await User.findOne({ email }).select('+password');
+    if (!user) {
+      throw new AppError(401, 'Invalid email or password');
+    }
 
-  const user = await User.findOne({ email }).select('+password');
-  if (!user) {
-    throw new AppError(401, 'Invalid email or password');
-  }
+    if (!user.password) {
+      throw new AppError(401, 'Password not set for this user');
+    }
 
-  if (!user.password) {
-    throw new AppError(401, 'Password not set for this user');
-  }
+    const isPasswordValid = await bcryptjs.compare(password, user.password);
+    if (!isPasswordValid) {
+      throw new AppError(401, 'Invalid email or password');
+    }
 
-  const isPasswordValid = await bcryptjs.compare(password, user.password);
-  if (!isPasswordValid) {
-    throw new AppError(401, 'Invalid email or password');
-  }
+    const accessToken = generateToken(
+      { userId: user._id.toString(), role: user.role },
+      envVars.JWT_ACCESS_SECRET,
+      envVars.JWT_ACCESS_EXPIRES
+    );
 
-  const accessToken = generateToken(
-    { userId: user._id.toString(), role: user.role },
-    envVars.JWT_ACCESS_SECRET,
-    envVars.JWT_ACCESS_EXPIRES
-  );
+    const refreshToken = generateToken(
+      { userId: user._id.toString(), role: user.role },
+      envVars.JWT_REFRESH_SECRET,
+      envVars.JWT_REFRESH_EXPIRES
+    );
 
-  const refreshToken = generateToken(
-    { userId: user._id.toString(), role: user.role },
-    envVars.JWT_REFRESH_SECRET,
-    envVars.JWT_REFRESH_EXPIRES
-  );
+    return {
+      accessToken,
+      refreshToken,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    };
+  },
 
-  return {
-    accessToken,
-    refreshToken,
-    user: {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-    },
-  };
-},
+  createUser: async (payload: Partial<IUser>) => {
+    const { email, password, ...rest } = payload;
 
+    if (!email || !password) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Email and password are required');
+    }
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'User already exists');
+    }
+
+    const hashedPassword = await bcryptjs.hash(password, Number(envVars.BCRYPT_SALT_ROUND));
+    const user = await User.create({
+      email,
+      password: hashedPassword,
+      ...rest,
+    });
+
+    return user;
+  },
 
   getNewAccessToken: async (refreshToken: string) => {
     if (!refreshToken) {

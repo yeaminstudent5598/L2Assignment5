@@ -28,6 +28,19 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getReceivers = catchAsync(async (req: Request, res: Response) => {
+  const receivers = await UserService.getReceivers();
+
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: 'Receivers retrieved successfully',
+    data: receivers,
+  });
+});
+
+
+
 const getSingleUser = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const user = await UserService.getSingleUser(id);
@@ -173,6 +186,7 @@ const unblockUser = catchAsync(async (req: Request, res: Response) => {
 
 export const UserController = {
   getAllUsers,
+  getReceivers,
   getSingleUser,
   createUser,
   updateUser,

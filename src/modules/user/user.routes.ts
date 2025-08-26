@@ -12,47 +12,18 @@ router.post('/register', UserController.createUser);
 router.get('/me', authenticate, UserController.getMeProfile);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-router.get(
-  '/my-parcels',
-  authenticate,
-  authorizeRoles('SENDER'),
-  UserController.getMyParcels
-);
-
-router.get(
-  '/incoming-parcels',
-  authenticate,
-  authorizeRoles('RECEIVER'),
-  UserController.getMyIncomingParcels
-);
-
-router.patch(
-  '/confirm/:parcelId',
-  authenticate,
-  authorizeRoles('RECEIVER'),
-  UserController.confirmParcelDelivery
-);
-
 router.get(
   '/',
   authenticate,
   authorizeRoles('ADMIN'),
   UserController.getAllUsers
 );
+router.get(
+  '/receivers', 
+  authenticate, 
+  authorizeRoles(
+    'ADMIN', 'SENDER'),
+     UserController.getReceivers);
 
 router.patch(
   '/block/:userId',

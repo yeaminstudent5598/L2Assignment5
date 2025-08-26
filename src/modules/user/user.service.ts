@@ -40,6 +40,12 @@ const getAllUsers = async () => {
   };
 };
 
+const getReceivers = async () => {
+  const receivers = await User.find({ role: 'RECEIVER', isBlocked: false }).select('-password');
+  return receivers;
+};
+
+
 const getSingleUser = async (id: string) => {
   const user = await User.findById(id).select('-password');
   if (!user) throw new AppError(httpStatus.NOT_FOUND, 'User not found');
@@ -116,6 +122,7 @@ const confirmParcelDelivery = async (parcelId: string) => {
 export const UserService = {
   createUser,
   getAllUsers,
+  getReceivers,
   getSingleUser,
   updateUser,
   deleteUser,

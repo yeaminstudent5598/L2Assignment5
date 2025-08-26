@@ -78,12 +78,6 @@ router.patch(
   ParcelController.unblockParcel
 );
 
-// Add tracking ID route
-router.get(
-  '/tracking/:trackingId',
-  ParcelController.getParcelByTrackingId
-);
-
 // Add status log route
 router.get(
   '/:parcelId/status-log',
@@ -98,12 +92,13 @@ router.get(
   ParcelController.getParcelById
 );
 
-router.get(
-  '/:id/status-log',
-   ParcelController.getParcelStatusLog);
+// router.get(
+//   '/:id/status-log',
+//    ParcelController.getParcelStatusLog);
 
-router.get('/track/:trackingId',
-   ParcelController.getParcelByTrackingId);
+router.get(
+'/tracking/:trackingId', 
+ ParcelController.getParcelByTrackingId);
 
 
 export const parcelRoutes = router;
