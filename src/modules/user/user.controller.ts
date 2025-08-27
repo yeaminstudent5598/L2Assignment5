@@ -12,7 +12,7 @@ interface AuthRequest extends Request {
 
 user?: AuthUser;
 
-}
+} 
 
 // Your handlers
 
