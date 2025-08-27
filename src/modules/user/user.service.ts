@@ -51,7 +51,7 @@ const getAllUsers = async (options: {
       { email: { $regex: searchTerm, $options: 'i' } },
     ];
   }
-
+ 
   const data = await User.find(filter)
     .select('-password')
     .sort({ createdAt: -1 })
