@@ -22,7 +22,7 @@ router.get(
   '/receivers', 
   authenticate, 
   authorizeRoles(
-    'ADMIN', 'SENDER'),
+    'ADMIN', 'SENDER'), 
      UserController.getReceivers);
 
 router.patch(
