@@ -30,14 +30,37 @@ const createUser = async (payload: Partial<IUser>) => {
   return user;
 };
 
-const getAllUsers = async () => {
-  const users = await User.find().select('-password');
-  const totalUsers = await User.countDocuments();
+const getAllUsers = async (options: {
+  page?: number;
+  limit?: number;
+  searchTerm?: string;
+  role?: string;
+}): Promise<{ data: IUser[]; total: number }> => {
+  const { page = 1, limit = 5, searchTerm, role } = options;
+  const skip = (page - 1) * limit;
 
-  return {
-    data: users,
-    meta: { total: totalUsers },
-  };
+  const filter: any = {};
+
+  if (role) {
+    filter.role = role;
+  }
+
+  if (searchTerm) {
+    filter.$or = [
+      { name: { $regex: searchTerm, $options: 'i' } },
+      { email: { $regex: searchTerm, $options: 'i' } },
+    ];
+  }
+
+  const data = await User.find(filter)
+    .select('-password')
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
+
+  const total = await User.countDocuments(filter);
+
+  return { data, total };
 };
 
 const getReceivers = async () => {

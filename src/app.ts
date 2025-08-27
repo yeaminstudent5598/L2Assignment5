@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import { AuthRoutes } from './modules/auth/auth.routes';
 import { UserRoutes } from './modules/user/user.routes';
 import { parcelRoutes } from './modules/parcel/parcel.routes';
+import { dashboardRoutes } from './modules/dashboard/dashboard.routes';
 
 dotenv.config();
 
@@ -12,7 +13,7 @@ const app: Application = express();
 
 // Middlewares
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: "https://parcel-go.vercel.app",
   credentials: true,               
 }));
 app.use(express.json());
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use('/api/auth', AuthRoutes);
 app.use('/api/users', UserRoutes);
 app.use('/api/parcels', parcelRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 // Health check or root
 app.get('/', (req: Request, res: Response) => {

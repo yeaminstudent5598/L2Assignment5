@@ -17,14 +17,19 @@ user?: AuthUser;
 // Your handlers
 
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
-  const result = await UserService.getAllUsers();
+  const options = req.query;
+  const result = await UserService.getAllUsers(options);
 
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'Users retrieved successfully',
     data: result.data,
-    meta: result.meta,
+    meta: {
+      page: Number(options.page) || 1,
+      limit: Number(options.limit) || 5,
+      total: result.total,
+    },
   });
 });
 

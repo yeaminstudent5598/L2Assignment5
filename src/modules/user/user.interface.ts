@@ -2,10 +2,6 @@
 
 export type UserRole = 'ADMIN' | 'SENDER' | 'RECEIVER';
 
-export enum IsBlocked {
-  BLOCKED = 'BLOCKED',
-  UNBLOCKED = 'UNBLOCKED',
-}
 
 export interface IUser {
   _id?: string;            
@@ -14,7 +10,7 @@ export interface IUser {
   phoneNumber: string;
   password?: string;       
   role: UserRole;
-  isBlocked?: IsBlocked;
+  isBlocked?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
