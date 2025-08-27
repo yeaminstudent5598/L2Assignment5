@@ -83,7 +83,7 @@ const resetPassword = catchAsync(async (req: Request, res: Response) => {
     message: 'Password changed successfully',
     data: null,
   });
-});
+}); 
 
 const logout = catchAsync(async (req: Request, res: Response) => {
   console.log('Logout called');
