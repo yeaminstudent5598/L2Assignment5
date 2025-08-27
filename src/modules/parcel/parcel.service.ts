@@ -298,7 +298,7 @@ const getParcelById = async (id: string): Promise<IParcel> => {
     
       return result;
     };
-  
+   
 
 export const ParcelService = {
   createParcel,

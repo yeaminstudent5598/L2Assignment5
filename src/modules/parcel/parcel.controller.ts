@@ -233,7 +233,7 @@ export const ParcelController = {
   createParcel,
   getAllParcels,
   getSenderParcels,
-  getReceiverParcels,
+  getReceiverParcels, 
   getParcelById,
   cancelParcel,
   confirmDelivery,

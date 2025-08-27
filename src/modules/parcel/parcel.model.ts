@@ -91,7 +91,7 @@ const ParcelSchema = new Schema<IParcel>(
     },
     statusLogs: {
       type: [ParcelStatusLogSchema],
-      default: [],
+      default: [], 
     },
     isBlocked: {
       type: Boolean,

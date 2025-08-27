@@ -8,7 +8,7 @@ export type ParcelStatus =
   | 'REQUESTED'
   | 'APPROVED'
   | 'DISPATCHED'
-  | 'IN_TRANSIT'
+  | 'IN_TRANSIT' 
   | 'DELIVERED'
   | 'CANCELLED'
   | 'RETURNED'

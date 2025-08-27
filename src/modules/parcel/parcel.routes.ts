@@ -40,7 +40,7 @@ router.patch(
   authenticate,
   authorizeRoles('RECEIVER'),
   ParcelController.confirmDelivery
-);
+); 
 
 // Add delivery history route
 router.get(
