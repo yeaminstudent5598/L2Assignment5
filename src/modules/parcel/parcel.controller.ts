@@ -4,6 +4,7 @@ import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status-codes';
 import AppError from '../../errorHelpers/AppError';
+import { io } from '../../server';
 
 const createParcel = catchAsync(async (req: Request, res: Response) => {
   const senderId = req.user?.id;
@@ -229,6 +230,39 @@ const getParcelStatusLog = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+
+const updateLocation = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { lat, lng } = req.body;
+
+  const result = await ParcelService.updateParcelLocation(id, lat, lng);
+
+  io.to(id).emit('location-update', { 
+    lat, 
+    lng,
+    updatedAt: new Date() 
+  });
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Location broadcasted in real-time!',
+    data: result,
+  });
+});
+
+const getActiveLocations = catchAsync(async (req: Request, res: Response) => {
+  // সার্ভিস থেকে ডাটা নিয়ে আসা
+  const result = await ParcelService.getActiveParcelLocations();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'সচল সব পার্সেলের লোকেশন সফলভাবে পাওয়া গেছে।',
+    data: result,
+  });
+});
+
 export const ParcelController = {
   createParcel,
   getAllParcels,
@@ -242,5 +276,7 @@ export const ParcelController = {
   getParcelStatusLog,
   getDeliveryHistory, // <-- Added to export
   blockParcel,        // <-- Added to export
-  unblockParcel,      // <-- Added to export
+  unblockParcel, 
+  updateLocation,
+  getActiveLocations,
 };

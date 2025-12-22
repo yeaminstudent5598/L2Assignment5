@@ -40,7 +40,10 @@ export interface IParcel extends Document {
   statusLogs: IParcelStatusLog[];    // history of status changes
 
   isBlocked?: boolean;                // parcel can be blocked by admin
-
+  currentLocation?: {
+    lat: number;
+    lng: number;
+  };
   createdAt?: Date;
   updatedAt?: Date;
 }

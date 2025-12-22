@@ -74,6 +74,16 @@ const ParcelSchema = new Schema<IParcel>(
       unique: true,
       index: true,
     },
+    currentLocation: {
+      lat: {
+        type: Number,
+        default: 23.8103, // ডিফল্ট ঢাকা
+      },
+      lng: {
+        type: Number,
+        default: 90.4125,
+      },
+    },
     status: {
       type: String,
       enum: [
@@ -97,7 +107,9 @@ const ParcelSchema = new Schema<IParcel>(
       type: Boolean,
       default: false,
     },
+    
   },
+  
   { timestamps: true }
 );
 

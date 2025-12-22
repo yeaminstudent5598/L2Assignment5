@@ -86,6 +86,21 @@ router.get(
   ParcelController.getParcelStatusLog
 );
 
+router.patch(
+  '/update-location/:id',
+  authenticate,
+  authorizeRoles('ADMIN', 'RIDER'),
+  ParcelController.updateLocation
+);
+
+router.get(
+  '/active-locations',
+  authenticate,
+  authorizeRoles('ADMIN'),
+  ParcelController.getActiveLocations // কন্ট্রোলারে এই মেথডটি যোগ করে নিও
+);
+
+
 router.get(
   '/:id',
   authenticate,
