@@ -2,7 +2,6 @@
 node_modules/
 
 # Environment variables
-.env
 
 # Dist output
 dist/
@@ -17,3 +16,4 @@ yarn-error.log*
 # OS-specific
 .DS_Store
 Thumbs.db
+config.bat
