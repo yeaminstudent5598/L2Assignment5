@@ -14,7 +14,7 @@ const app: Application = express();
 
 // Middlewares
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: "https://parcel-go.vercel.app",
   credentials: true,               
 }));
 app.use(express.json());
